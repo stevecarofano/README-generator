@@ -1,12 +1,13 @@
 // TODO: Include packages needed for this application
 
 const config = require('./package.json');
-const generateMarkdown = require('./utils/generateMarkdown');
 const inquirer = require('inquirer');
+const fs = require("fs");
+const generateMarkdown = require('./utils/generateMarkdown');
 
 // TODO: Create an array of questions for user input
 
-const questions = inquirer.prompt([
+const questions = [
 {
     type: "input",
     name: "title",
@@ -65,15 +66,22 @@ const questions = inquirer.prompt([
     type: "input",
     name: "email",
     message: "Please enter your email: "
-}])
+}]
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function writeToFile(fileName, data) {
+    fs.writeFile(fileName, data ,(err) =>
+        err ? console.error(err) : console.log('Success!')
+)};
 
 // TODO: Create a function to initialize app
-function init() {}
+function init() {
+    inquirer.prompt(questions)
+        .then(function(answers){
+           const text =  generateMarkdown(answers)
+           writeToFile("README.md", text)
+        })
+}
 
 // Function call to initialize app
 init();
-
-// https://www.npmjs.com/package/inquirer //
